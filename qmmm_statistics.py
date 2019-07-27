@@ -14,7 +14,48 @@ mpl.use('pdf')
 import matplotlib.pyplot as plt
 from matplotlib.patches import Ellipse
 
+def MakePlot(x1,y1,x2,y2, name, marker='o'):
+    
+    fig = plt.figure()
 
+    #MP2_mbis_polar_error= np.sqrt(df.expError[conjunction(c_2,c_3,c_9,c_13, c_16)] + df.calcError[conjunction(c_2,c_3,c_9,c_13, c_16)])
+    #expErrors = np.sqrt(df.expError[conjunction(c_2,c_3,c_9,c_13, c_16)])
+    ax = fig.add_subplot(1,2,1,aspect='equal')
+    ax.text(sp1x, sp1y, pbanner,style='italic',fontsize=pbsize,bbox={'facecolor': bfc, 'alpha': balpha,'edgecolor':bec, 'pad': pad, 'lw':lw})
+    ax.scatter(x1,y1,marker=marker,edgecolors=mec,linewidths=mew,c=mfc,s=sm,alpha=alpha) #,s=expErrors )
+    ax.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
+    ax.set_ylabel(ylabel) 
+    ax.set_xlabel(xlabel) 
+    ax.set_xlim(minl, maxl)
+    ax.set_ylim(minl, maxl)
+    ax.yaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
+    ax.xaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
+    ax.tick_params(direction='in', which='both',bottom=True, top=True, left=True, right=True)
+    
+    
+    
+    #MP2_mbis_fixed_error= np.sqrt(df.expError[conjunction(c_2,c_3,c_9,c_13, c_16)] + df.calcError[conjunction(c_2,c_3,c_9,c_13, c_16)])
+    ax = fig.add_subplot(1,2,2,aspect='equal')
+    ax.text(sp2x, sp2y, fbanner,style='italic',fontsize=pbsize,bbox={'facecolor': bfc, 'alpha': balpha,'edgecolor':bec, 'pad': pad, 'lw':lw})
+    ax.scatter(x2,y2,marker='o',edgecolors=mec,linewidths=mew,c=mfc,s=sm,alpha=alpha)
+    ax.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
+    ax.set_xlabel(xlabel) 
+    ax.set_xlim(minl, maxl)
+    ax.set_ylim(minl, maxl)
+    ax.yaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
+    ax.xaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
+    ax.tick_params(direction='in', which='both',bottom=True, top=True, left=True, right=True)
+    
+    fig.tight_layout()
+    
+    plt.show()
+    fig.set_size_inches(width, height)
+    fig.savefig(name,dpi=dpi)
+
+###################################
+#   Read in Excel file into Pandas
+###################################    
+    
 data = pd.read_excel (r'Hydration_Energies_For_Plots.xlsx')
 
 ###############################
@@ -256,335 +297,84 @@ dpi=800   # resolution of pdf image
 #fig, ax = plt.subplots()
 #fig.subplots_adjust(left=.15, bottom=.16, right=.99, top=.97)
 
+###############################################################################
+###############################################################################
+#                 MP2/cc-pVTZ Polar and Fixed
+###############################################################################
+############################################################################### 
+x1=df.calc[conjunction(c_2,c_3,c_9,c_13, c_16)]          #MP2 polar
+y1=df.experiment[conjunction(c_2,c_3,c_9,c_13, c_16)]
+x2=df.calc[conjunction(c_1,c_3,c_9,c_13, c_16)]          #MP2 fixed
+y2=df.experiment[conjunction(c_1,c_3,c_9,c_13, c_16)]
+outputName="MP2_MBIS.pdf"
+    
+MakePlot(x1,y1,x2,y2,outputName)    
 
 ###############################################################################
 ###############################################################################
-fig = plt.figure()
-
-
-MP2_mbis_polar_error= np.sqrt(df.expError[conjunction(c_2,c_3,c_9,c_13, c_16)] + df.calcError[conjunction(c_2,c_3,c_9,c_13, c_16)])
-expErrors = np.sqrt(df.expError[conjunction(c_2,c_3,c_9,c_13, c_16)])
-ax = fig.add_subplot(1,2,1,aspect='equal')
-ax.text(sp1x, sp1y, pbanner,style='italic',fontsize=pbsize,bbox={'facecolor': bfc, 'alpha': balpha,'edgecolor':bec, 'pad': pad, 'lw':lw})
-ax.scatter(df.calc[conjunction(c_2,c_3,c_9,c_13, c_16)],df.experiment[conjunction(c_2,c_3,c_9,c_13, c_16)],marker='o',edgecolors=mec,linewidths=mew,c=mfc,s=sm,alpha=alpha) #,s=expErrors )
-ax.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
-ax.set_ylabel(ylabel) 
-ax.set_xlabel(xlabel) 
-ax.set_xlim(minl, maxl)
-ax.set_ylim(minl, maxl)
-ax.yaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.xaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.tick_params(direction='in', which='both',bottom=True, top=True, left=True, right=True)
-
-
-
-MP2_mbis_fixed_error= np.sqrt(df.expError[conjunction(c_2,c_3,c_9,c_13, c_16)] + df.calcError[conjunction(c_2,c_3,c_9,c_13, c_16)])
-ax = fig.add_subplot(1,2,2,aspect='equal')
-ax.text(sp2x, sp2y, fbanner,style='italic',fontsize=pbsize,bbox={'facecolor': bfc, 'alpha': balpha,'edgecolor':bec, 'pad': pad, 'lw':lw})
-ax.scatter(df.calc[conjunction(c_1,c_3,c_9,c_13, c_16)],df.experiment[conjunction(c_1,c_3,c_9,c_13, c_16)],marker='o',edgecolors=mec,linewidths=mew,c=mfc,s=sm,alpha=alpha)
-ax.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
-ax.set_xlabel(xlabel) 
-ax.set_xlim(minl, maxl)
-ax.set_ylim(minl, maxl)
-ax.yaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.xaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.tick_params(direction='in', which='both',bottom=True, top=True, left=True, right=True)
-
-fig.tight_layout()
-
-plt.show()
-fig.set_size_inches(width, height)
-fig.savefig('MP2.pdf',dpi=dpi)
+#                B3LYP/cc-pVTZ Polar and Fixed
 ###############################################################################
-###############################################################################
-fig = plt.figure()
-
-B3LYP_mbis_polar_error= np.sqrt(df.expError[conjunction(c_2,c_3,c_9,c_12, c_16)] + df.calcError[conjunction(c_2,c_3,c_9,c_12, c_16)])
-expErrors = np.sqrt(df.expError[conjunction(c_2,c_3,c_9,c_12, c_16)])
-
-ax = fig.add_subplot(1,2,1,aspect='equal')
-ax.text(sp1x, sp1y, pbanner,style='italic',fontsize=pbsize,bbox={'facecolor': bfc, 'alpha': balpha,'edgecolor':bec, 'pad': pad, 'lw':lw})
-
-ax.scatter(df.calc[conjunction(c_2,c_3,c_9,c_12, c_16)],df.experiment[conjunction(c_2,c_3,c_9,c_12, c_16)],marker='o',edgecolors=mec,linewidths=mew,c=mfc,s=sm,alpha=alpha)
-ax.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
-ax.set_ylabel(ylabel)
-ax.set_xlabel(xlabel) 
-ax.set_xlim(minl, maxl)
-ax.set_ylim(minl, maxl)
-ax.yaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.xaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.tick_params(direction='in', which='both',bottom=True, top=True, left=True, right=True)
-
-B3LYP_mbis_fixed_error= np.sqrt(df.expError[conjunction(c_2,c_3,c_9,c_12, c_16)] + df.calcError[conjunction(c_2,c_3,c_9,c_13, c_16)])
-
-ax = fig.add_subplot(1,2,2,aspect='equal')
-ax.text(sp2x, sp2y, fbanner,style='italic',fontsize=pbsize,bbox={'facecolor': bfc, 'alpha': balpha,'edgecolor':bec, 'pad': pad, 'lw':lw})
-ax.scatter(df.calc[conjunction(c_1,c_3,c_9,c_12, c_16)],df.experiment[conjunction(c_1,c_3,c_9,c_12, c_16)],marker='o',edgecolors=mec,linewidths=mew,c=mfc,s=sm,alpha=alpha)
-ax.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
-ax.set_facecolor("none")
-ax.set_xlabel(xlabel)
-ax.set_xlim(minl, maxl)
-ax.set_ylim(minl, maxl)
-ax.yaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.xaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.tick_params(direction='in', which='both',bottom=True, top=True, left=True, right=True)
-
-fig.tight_layout()
-
-plt.show()
-fig.set_size_inches(width, height)
-fig.savefig('B3LYP.pdf')
+############################################################################### 
+x1=df.calc[conjunction(c_2,c_3,c_9,c_12, c_16)]          
+y1=df.experiment[conjunction(c_2,c_3,c_9,c_12, c_16)]
+x2=df.calc[conjunction(c_1,c_3,c_9,c_12, c_16)]         
+y2=df.experiment[conjunction(c_1,c_3,c_9,c_12, c_16)]
+outputName="B3LYP_MBIS.pdf"
+    
+MakePlot(x1,y1,x2,y2,outputName) 
 
 ###############################################################################
 ###############################################################################
-fig = plt.figure(3)
-
-FreeSolv_polar_error= np.sqrt(df.expError[conjunction(c_18)] + df.calcError[conjunction(c_18)])
-expErrors = np.sqrt(df.expError[conjunction(c_18)])
-
-ax = fig.add_subplot(1,2,1,aspect='equal')
-ax.text(sp1x, sp1y, pbanner,style='italic',fontsize=pbsize,bbox={'facecolor': bfc, 'alpha': balpha,'edgecolor':bec, 'pad': pad, 'lw':lw})
-ax.scatter(df.FreeSolv[conjunction(c_18)],df.experiment[conjunction(c_18)],marker='o',edgecolors=mec,linewidths=mew,c=mfc,s=sm,alpha=alpha)
-ax.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
-xmin, xmax, ymin, ymax = ax.axis('square')
-ax.set_ylabel(ylabel)
-ax.set_xlabel(xlabel)
-ax.set_xlim(minl, maxl)
-ax.set_ylim(minl, maxl)
-ax.yaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.xaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.tick_params(direction='in', which='both',bottom=True, top=True, left=True, right=True)
-
-Riquelme_mbis_fixed_error= np.sqrt(df.expError[conjunction(c_19)] + df.calcError[conjunction(c_19)])
-expErrors = np.sqrt(df.expError[conjunction(c_19)])
-ax = fig.add_subplot(1,2,2,aspect='equal')
-ax.text(sp2x, sp2y, fbanner,style='italic',fontsize=pbsize,bbox={'facecolor': bfc, 'alpha': balpha,'edgecolor':bec, 'pad': pad, 'lw':lw})
-ax.scatter(df.Riquelme[conjunction(c_19)],df.experiment[conjunction(c_19)],marker='o',edgecolors=mec,linewidths=mew,c=mfc,s=sm,alpha=alpha)
-ax.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
-ax.set_facecolor("none")
-ax.set_xlabel(xlabel) 
-ax.set_xlim(minl, maxl)
-ax.set_ylim(minl, maxl)
-ax.yaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.xaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.tick_params(direction='in', which='both',bottom=True, top=True, left=True, right=True)
-
-fig.tight_layout()
-
-plt.show(3)
-fig.set_size_inches(width, height)
-fig.savefig('FreeRiquelme.pdf')
+#               FreeSolv AM1BCC and Riquelme MBIS
+###############################################################################
+############################################################################### 
+x1=df.FreeSolv[conjunction(c_18)]          
+y1=df.experiment[conjunction(c_18)]
+x2=df.Riquelme[conjunction(c_19)]        
+y2=df.experiment[conjunction(c_19)]
+outputName="FreeSolv_Riquelme.pdf"
+    
+MakePlot(x1,y1,x2,y2,outputName)
 
 ###############################################################################
 ###############################################################################
-fig = plt.figure()
-
-AM1BCC_polar_error= np.sqrt(df.expError[conjunction(c_2,c_3,c_11)] + df.calcError[conjunction(c_2,c_3,c_11)])
-expErrors = np.sqrt(df.expError[conjunction(c_2,c_3,c_11)])
-
-ax = fig.add_subplot(1,2,1,aspect='equal')
-ax.text(sp1x, sp1y, pbanner,style='italic',fontsize=pbsize,bbox={'facecolor': bfc, 'alpha': balpha,'edgecolor':bec, 'pad': pad, 'lw':lw})
-ax.scatter(df.calc[conjunction(c_2,c_3,c_11)],df.experiment[conjunction(c_2,c_3,c_11)],marker='o',edgecolors=mec,linewidths=mew,c=mfc,s=sm,alpha=alpha)
-ax.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
-ax.set_ylabel(ylabel) 
-ax.set_xlabel(xlabel) 
-ax.set_xlim(minl, maxl)
-ax.set_ylim(minl, maxl)
-ax.yaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.xaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.tick_params(direction='in', which='both',bottom=True, top=True, left=True, right=True)
-
-AM1BCC_fixed_error= np.sqrt(df.expError[conjunction(c_1,c_3,c_11)] + df.calcError[conjunction(c_1,c_3,c_11)])
-
-ax = fig.add_subplot(1,2,2,aspect='equal')
-ax.text(sp2x, sp2y, fbanner,style='italic',fontsize=pbsize,bbox={'facecolor': bfc, 'alpha': balpha,'edgecolor':bec, 'pad': pad, 'lw':lw})
-ax.scatter(df.calc[conjunction(c_1,c_3,c_11)],df.experiment[conjunction(c_1,c_3,c_11)],marker='o',edgecolors=mec,linewidths=mew,c=mfc,s=sm,alpha=alpha)
-ax.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
-ax.set_facecolor("none")
-ax.set_xlabel(xlabel) 
-ax.set_xlim(minl, maxl)
-ax.set_ylim(minl, maxl)
-ax.yaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.xaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.tick_params(direction='in', which='both',bottom=True, top=True, left=True, right=True)
-
-fig.tight_layout()
-
-plt.show()
-fig.set_size_inches(width, height)
-fig.savefig('AM1BCC.pdf')
+#                       AM1-BCC Polar and Fixed
+###############################################################################
+############################################################################### 
+x1=df.calc[conjunction(c_2,c_3,c_11)]         
+y1=df.experiment[conjunction(c_2,c_3,c_11)]
+x2=df.calc[conjunction(c_1,c_3,c_11)]        
+y2=df.experiment[conjunction(c_1,c_3,c_11)]
+outputName="AM1-BCC"
+    
+MakePlot(x1,y1,x2,y2,outputName)
 
 ###############################################################################
 ###############################################################################
-fig = plt.figure()
-
-HF_resp_polar_error= np.sqrt(df.expError[conjunction(c_2,c_3,c_10,c_15, c_17)] + df.calcError[conjunction(c_2,c_3,c_10,c_15, c_17)])
-expErrors = np.sqrt(df.expError[conjunction(c_2,c_3,c_10,c_15, c_17)])
-
-ax = fig.add_subplot(1,2,1,aspect='equal')
-ax.text(sp1x, sp1y, pbanner,style='italic',fontsize=pbsize,bbox={'facecolor': bfc, 'alpha': balpha,'edgecolor':bec, 'pad': pad, 'lw':lw})
-ax.scatter(df.calc[conjunction(c_2,c_3,c_10,c_15, c_17)],df.experiment[conjunction(c_2,c_3,c_10,c_15, c_17)],marker='o',edgecolors=mec,linewidths=mew,c=mfc,s=sm,alpha=alpha)
-ax.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
-ax.set_ylabel(ylabel) 
-ax.set_xlabel(xlabel) 
-ax.set_xlim(minl, maxl)
-ax.set_ylim(minl, maxl)
-ax.yaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.xaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.tick_params(direction='in', which='both',bottom=True, top=True, left=True, right=True)
-
-HF_resp_fixed_error= np.sqrt(df.expError[conjunction(c_1,c_3,c_10,c_15, c_17)] + df.calcError[conjunction(c_1,c_3,c_10,c_15, c_17)])
-
-ax = fig.add_subplot(1,2,2,aspect='equal')
-ax.text(sp2x, sp2y, fbanner,style='italic',fontsize=pbsize,bbox={'facecolor': bfc, 'alpha': balpha,'edgecolor':bec, 'pad': pad, 'lw':lw})
-ax.scatter(df.calc[conjunction(c_1,c_3,c_10,c_15, c_17)],df.experiment[conjunction(c_1,c_3,c_10,c_15, c_17)],marker='o',edgecolors=mec,linewidths=mew,c=mfc,s=sm,alpha=alpha)
-ax.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
-ax.set_xlabel(xlabel) 
-ax.set_xlim(minl, maxl)
-ax.set_ylim(minl, maxl)
-ax.yaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.xaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.tick_params(direction='in', which='both',bottom=True, top=True, left=True, right=True)
-
-fig.tight_layout()
-
-plt.show()
-fig.set_size_inches(width, height)
-fig.savefig('HF_resp.pdf')
+#               HF/6-31G* RESP Polar and Fixed
+###############################################################################
+############################################################################### 
+x1=df.calc[conjunction(c_2,c_3,c_10,c_15, c_17)]         
+y1=df.experiment[conjunction(c_2,c_3,c_10,c_15, c_17)]
+x2=df.calc[conjunction(c_1,c_3,c_10,c_15, c_17)]        
+y2=df.experiment[conjunction(c_1,c_3,c_10,c_15, c_17)]
+outputName="HF_RESP"
+    
+MakePlot(x1,y1,x2,y2,outputName)
 
 ###############################################################################
 ###############################################################################
-fig = plt.figure()
-
-B3LYP_resp_polar_error= np.sqrt(df.expError[conjunction(c_2,c_3,c_10,c_12, c_16)] + df.calcError[conjunction(c_2,c_3,c_10,c_12, c_16)])
-expErrors = np.sqrt(df.expError[conjunction(c_2,c_3,c_10,c_12, c_16)])
-
-ax = fig.add_subplot(1,2,1,aspect='equal')
-ax.text(sp1x, sp1y, pbanner,style='italic',fontsize=pbsize,bbox={'facecolor': bfc, 'alpha': balpha,'edgecolor':bec, 'pad': pad, 'lw':lw})
-ax.scatter(df.calc[conjunction(c_2,c_3,c_10,c_12, c_16)],df.experiment[conjunction(c_2,c_3,c_10,c_12, c_16)],marker='o',edgecolors=mec,linewidths=mew,c=mfc,s=sm,alpha=alpha)
-ax.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
-ax.set_ylabel(ylabel)
-ax.set_xlabel(xlabel)
-ax.set_xlim(minl, maxl)
-ax.set_ylim(minl, maxl)
-ax.yaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.xaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.tick_params(direction='in', which='both',bottom=True, top=True, left=True, right=True)
-
-B3LYP_resp_fixed_error= np.sqrt(df.expError[conjunction(c_1,c_3,c_10,c_12, c_16)] + df.calcError[conjunction(c_1,c_3,c_10,c_12, c_16)])
-
-ax = fig.add_subplot(1,2,2,aspect='equal')
-ax.text(sp2x, sp2y, fbanner,style='italic',fontsize=pbsize,bbox={'facecolor': bfc, 'alpha': balpha,'edgecolor':bec, 'pad': pad, 'lw':lw})
-ax.scatter(df.calc[conjunction(c_1,c_3,c_10,c_12, c_16)],df.experiment[conjunction(c_1,c_3,c_10,c_12, c_16)],marker='o',edgecolors=mec,linewidths=mew,c=mfc,s=sm,alpha=alpha)
-ax.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
-ax.set_xlabel(xlabel)
-ax.set_xlim(minl, maxl)
-ax.set_ylim(minl, maxl)
-ax.yaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.xaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.tick_params(direction='in', which='both',bottom=True, top=True, left=True, right=True)
-
-fig.tight_layout()
-
-plt.show()
-fig.set_size_inches(width, height)
-fig.savefig('B3LYP_resp.pdf')
-
+#               B3LYP/cc-pVTZ RESP Polar and Fixed
 ###############################################################################
-###############################################################################
-"""
-fig = plt.figure()
-maxl=25
-minl=-110
+############################################################################### 
+x1=df.calc[conjunction(c_2,c_3,c_10,c_12, c_16)]        
+y1=df.experiment[conjunction(c_2,c_3,c_10,c_12, c_16)]
+x2=df.calc[conjunction(c_1,c_3,c_10,c_12, c_16)]       
+y2=df.experiment[conjunction(c_1,c_3,c_10,c_12, c_16)]
+outputName="B3LYP_RESP"
+    
+MakePlot(x1,y1,x2,y2,outputName)
 
-plt.scatter(df.FreeSolv[conjunction(c_18)],df.calc[conjunction(c_1,c_3,c_11)],marker='o',facecolors='none',c='k')
-#ax.scatter(df.calc[conjunction(c_1,c_3,c_10,c_12, c_16)],df.experiment[conjunction(c_1,c_3,c_10,c_12, c_16)],marker='o',facecolors='none',c='m',s=expErrors )
-plt.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
-xmin, xmax, ymin, ymax = fig.axis('square')
-fig.set_facecolor("none")
-#ax.set_ylabel('y') #r'Experiment, $\mathrm{ \frac{kJ}{mol} }$')
-fig.set_xlabel(xlabel) #, $\mathrm{ \frac{kJ}{mol} }$')
-fig.set_xlim(minl, maxl)
-fig.set_ylim(minl, maxl)
-fig.set_title('Fixed charges: Free vs AM1', fontsize=8)
-
-#fig.tight_layout()
-
-plt.show()
-fig.set_size_inches(width, height)
-fig.savefig('FreeSolv_vs_AM1BCC.pdf')
-"""
-"""
-plt.scatter(df.FreeSolv[conjunction(c_18)],df.calc[conjunction(c_1,c_3,c_11)])
-plt.plot( [-110,20],[-110,20] )
-xmin, xmax, ymin, ymax = plt.axis('square')
-plt.xticks(np.arange(-100,25,step=20))
-plt.yticks(np.arange(-100,25,step=20))
-plt.title('AM1BCC vs AM1BCC', fontsize=10)
-plt.xlabel(r'FreeSolv, $\mathrm{ \frac{kJ}{mol} }$')
-plt.ylabel(r'Calculated, $\mathrm{ \frac{kJ}{mol} }$')
-plt.show()
-"""
-
-###############################################################################
-###############################################################################
-
-maxl=25
-minl=-110
-
-calc = np.asarray(df.calc[conjunction(c_1,c_3,c_9,c_13, c_16)])
-exp = np.asarray(df.experiment[conjunction(c_1,c_3,c_9,c_13, c_16)])
-calcError = np.asarray(df.calcError[conjunction(c_1,c_3,c_9,c_13, c_16)])
-expError = np.asarray(df.expError[conjunction(c_1,c_3,c_9,c_13, c_16)])
-
-#MP2_mbis_polar_error= df.expError[conjunction(c_2,c_3,c_9,c_13, c_16)] + df.calcError[conjunction(c_2,c_3,c_9,c_13, c_16)]
-
-ells = [Ellipse( (float(calc[i]),float(exp[i])),  width= float(calcError[i]), height= float(expError[i]), angle = 0) for i in range(5,len(calc))]
-#fig = plt.figure()
-
-ax = fig.add_subplot(121, aspect='equal')
-ax.text(sp1x, sp1y, pbanner,style='italic',fontsize=pbsize,bbox={'facecolor': bfc, 'alpha': balpha,'edgecolor':bec, 'pad': pad, 'lw':lw})
-for e in ells:
-    ax.add_artist(e)
-    e.set_facecolor('m')
-ax.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
-
-ax.set_ylabel(ylabel) #, $\mathrm{ \frac{kJ}{mol} }$')
-ax.set_xlabel(xlabel) #, $\mathrm{ \frac{kJ}{mol} }$')
-ax.set_xlim(minl, maxl)
-ax.set_ylim(minl, maxl)
-ax.yaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.xaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.tick_params(direction='in', which='both',bottom=True, top=True, left=True, right=True)
-
-
-
-calc = np.asarray(df.calc[conjunction(c_2,c_3,c_9,c_13, c_16)])
-exp = np.asarray(df.experiment[conjunction(c_2,c_3,c_9,c_13, c_16)])
-calcError = np.asarray(df.calcError[conjunction(c_2,c_3,c_9,c_13, c_16)])
-expError = np.asarray(df.expError[conjunction(c_2,c_3,c_9,c_13, c_16)])
-#MP2_mbis_polar_error= df.expError[conjunction(c_2,c_3,c_9,c_13, c_16)] + df.calcError[conjunction(c_2,c_3,c_9,c_13, c_16)]
-
-ells = [Ellipse(xy=(calc[i],exp[i] ), width= calcError[i], height=expError[i]) for i in range(len(calc))]
-
-ax = fig.add_subplot(122, aspect='equal')
-for e in ells:
-    ax.add_artist(e)
-    e.set_facecolor('m')
-ax.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
-
-ax.set_ylabel(ylabel) #, $\mathrm{ \frac{kJ}{mol} }$')
-ax.set_xlabel(xlabel) #, $\mathrm{ \frac{kJ}{mol} }$')
-ax.set_xlim(minl, maxl)
-ax.set_ylim(minl, maxl)
-ax.yaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.xaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
-ax.tick_params(direction='in', which='both',bottom=True, top=True, left=True, right=True)
-#ax.set_title('MP2/cc-pVTZ polar MBIS', fontsize=title_font)
-
-#plt.show()
-#fig.set_size_inches(width, height)
-#fig.savefig('MP2b.pdf')
 
 ###############################################################################
 ###############################################################################
