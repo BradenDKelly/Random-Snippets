@@ -166,9 +166,11 @@ print("=========================================================================
 print("B3LYP/cc-pVTZ mbis polar :", B3LYP_mbis_polar_rmse, " kJ/mol ", B3LYP_mbis_polar_rmse / 4.184, "  kcal/mol"  )
 print("MP2/cc-pVTZ mbis polar   :", MP2_mbis_polar_rmse, "  kJ/mol ", MP2_mbis_polar_rmse / 4.184, " kcal/mol"  )
 print("B3LYP/cc-pVTZ resp polar :", B3LYP_resp_polar_rmse, " kJ/mol ", B3LYP_resp_polar_rmse / 4.184, "  kcal/mol"  )
+print("B3LYP/cc-pVTZ resp fixed :", B3LYP_resp_fixed_rmse, " kJ/mol ", B3LYP_resp_fixed_rmse / 4.184, "  kcal/mol"  )
 print("HF/6-31G* resp polar     :", HF_resp_polar_rmse, " kJ/mol ", HF_resp_polar_rmse / 4.184, "  kcal/mol"  )
 print("HF/6-31G* resp fixed     :", HF_resp_fixed_rmse, " kJ/mol ", HF_resp_fixed_rmse / 4.184, "  kcal/mol"  )
-print("AM1BCC fixed             :", BCC_fixed_rmse, "  kJ/mol ", BCC_fixed_rmse / 4.184, " kcal/mol"  )
+print("AM1BCC fixed             :", BCC_polar_rmse, "  kJ/mol ", BCC_polar_rmse / 4.184, " kcal/mol"  )
+print("AM1BCC polar             :", BCC_fixed_rmse, "  kJ/mol ", BCC_fixed_rmse / 4.184, " kcal/mol"  )
 print("FreeSolv database        :", FreeSolv_rmse, " kJ/mol ", FreeSolv_rmse / 4.184, " kcal/mol" )
 print("Riquelme results         :", Riquelme_rmse, " kJ/mol ", Riquelme_rmse / 4.184, "  kcal/mol" )
 print("B3LYP/cc-pVTZ mbis fixed :", B3LYP_mbis_fixed_rmse, "  kJ/mol ", B3LYP_mbis_fixed_rmse / 4.184, "  kcal/mol"  )
@@ -376,5 +378,110 @@ outputName="B3LYP_RESP"
 MakePlot(x1,y1,x2,y2,outputName)
 
 
+###############################################################################
+###############################################################################
+x1=df.FreeSolv[conjunction(c_18)]        
+y1=df.calc[conjunction(c_1,c_3,c_11)]
+x2=df.FreeSolv[conjunction(c_19)]        
+y2=df.calc[conjunction(c_1,c_3,c_11)]
+outputName="AM1BCC vs FreeSolve, Riquelme vs AM1bcc"
+    
+#MakePlot(x1,y1,x2,y2,outputName)
+
+
+"""
+fig = plt.figure()
+maxl=25
+minl=-110
+
+plt.scatter(df.FreeSolv[conjunction(c_18)],df.calc[conjunction(c_1,c_3,c_11)],marker='o',facecolors='none',c='k')
+#ax.scatter(df.calc[conjunction(c_1,c_3,c_10,c_12, c_16)],df.experiment[conjunction(c_1,c_3,c_10,c_12, c_16)],marker='o',facecolors='none',c='m',s=expErrors )
+plt.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
+xmin, xmax, ymin, ymax = fig.axis('square')
+fig.set_facecolor("none")
+#ax.set_ylabel('y') #r'Experiment, $\mathrm{ \frac{kJ}{mol} }$')
+fig.set_xlabel(xlabel) #, $\mathrm{ \frac{kJ}{mol} }$')
+fig.set_xlim(minl, maxl)
+fig.set_ylim(minl, maxl)
+fig.set_title('Fixed charges: Free vs AM1', fontsize=8)
+
+#fig.tight_layout()
+
+plt.show()
+fig.set_size_inches(width, height)
+fig.savefig('FreeSolv_vs_AM1BCC.pdf')
+"""
+"""
+plt.scatter(df.FreeSolv[conjunction(c_18)],df.calc[conjunction(c_1,c_3,c_11)])
+plt.plot( [-110,20],[-110,20] )
+xmin, xmax, ymin, ymax = plt.axis('square')
+plt.xticks(np.arange(-100,25,step=20))
+plt.yticks(np.arange(-100,25,step=20))
+plt.title('AM1BCC vs AM1BCC', fontsize=10)
+plt.xlabel(r'FreeSolv, $\mathrm{ \frac{kJ}{mol} }$')
+plt.ylabel(r'Calculated, $\mathrm{ \frac{kJ}{mol} }$')
+plt.show()
+"""
+
+###############################################################################
+###############################################################################
+"""
+maxl=25
+minl=-110
+
+calc = np.asarray(df.calc[conjunction(c_1,c_3,c_9,c_13, c_16)])
+exp = np.asarray(df.experiment[conjunction(c_1,c_3,c_9,c_13, c_16)])
+calcError = np.asarray(df.calcError[conjunction(c_1,c_3,c_9,c_13, c_16)])
+expError = np.asarray(df.expError[conjunction(c_1,c_3,c_9,c_13, c_16)])
+
+#MP2_mbis_polar_error= df.expError[conjunction(c_2,c_3,c_9,c_13, c_16)] + df.calcError[conjunction(c_2,c_3,c_9,c_13, c_16)]
+
+ells = [Ellipse( (float(calc[i]),float(exp[i])),  width= float(calcError[i]), height= float(expError[i]), angle = 0) for i in range(5,len(calc))]
+#fig = plt.figure()
+
+ax = fig.add_subplot(121, aspect='equal')
+ax.text(sp1x, sp1y, pbanner,style='italic',fontsize=pbsize,bbox={'facecolor': bfc, 'alpha': balpha,'edgecolor':bec, 'pad': pad, 'lw':lw})
+for e in ells:
+    ax.add_artist(e)
+    e.set_facecolor('m')
+ax.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
+
+ax.set_ylabel(ylabel) #, $\mathrm{ \frac{kJ}{mol} }$')
+ax.set_xlabel(xlabel) #, $\mathrm{ \frac{kJ}{mol} }$')
+ax.set_xlim(minl, maxl)
+ax.set_ylim(minl, maxl)
+ax.yaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
+ax.xaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
+ax.tick_params(direction='in', which='both',bottom=True, top=True, left=True, right=True)
+
+
+
+calc = np.asarray(df.calc[conjunction(c_2,c_3,c_9,c_13, c_16)])
+exp = np.asarray(df.experiment[conjunction(c_2,c_3,c_9,c_13, c_16)])
+calcError = np.asarray(df.calcError[conjunction(c_2,c_3,c_9,c_13, c_16)])
+expError = np.asarray(df.expError[conjunction(c_2,c_3,c_9,c_13, c_16)])
+#MP2_mbis_polar_error= df.expError[conjunction(c_2,c_3,c_9,c_13, c_16)] + df.calcError[conjunction(c_2,c_3,c_9,c_13, c_16)]
+
+ells = [Ellipse(xy=(calc[i],exp[i] ), width= calcError[i], height=expError[i]) for i in range(len(calc))]
+
+ax = fig.add_subplot(122, aspect='equal')
+for e in ells:
+    ax.add_artist(e)
+    e.set_facecolor('m')
+ax.plot( [minl, maxl],[minl, maxl],c='k',linewidth=linewidth )
+
+ax.set_ylabel(ylabel) #, $\mathrm{ \frac{kJ}{mol} }$')
+ax.set_xlabel(xlabel) #, $\mathrm{ \frac{kJ}{mol} }$')
+ax.set_xlim(minl, maxl)
+ax.set_ylim(minl, maxl)
+ax.yaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
+ax.xaxis.set_minor_locator(plt.MultipleLocator(minorTicks))
+ax.tick_params(direction='in', which='both',bottom=True, top=True, left=True, right=True)
+#ax.set_title('MP2/cc-pVTZ polar MBIS', fontsize=title_font)
+
+#plt.show()
+#fig.set_size_inches(width, height)
+#fig.savefig('MP2b.pdf')
+"""
 ###############################################################################
 ###############################################################################
