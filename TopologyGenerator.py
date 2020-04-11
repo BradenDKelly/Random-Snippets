@@ -4,6 +4,8 @@ The purpose is to take a pdb (ultimately, the purpose is to take anything)
 and generate a GAFF with user defined partial charges. This is particularly
 the point for MBIS partial charges, which are not common.
 
+Available Charge are: MBIS, AM1-BCC, RESP, ESP, Hirshfeld, Iterative Hirshfeld, CI, CM5
+
 This program will also take a pdb and geometry optimize it if the user wishes.
 
 TODO:
